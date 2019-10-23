@@ -2,5 +2,5 @@
 
 nodejs app for phillips hue
 
-
+git clone and run 'yarn'
 
