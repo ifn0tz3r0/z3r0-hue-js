@@ -11,9 +11,7 @@ let groups = {
 let config = {
   ip: `192.168.1.74`,
   uname: `-cl3CKsN3O3F74GACqx-Zs9lDnwTn2zLtoCuGF20`,
-  bAllowInput: true,
-  msPostRequestSleep: 500,
-  inputInterval: null
+  msPostRequestSleep: 500
 }
 //  ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// /////
 let actions = {
