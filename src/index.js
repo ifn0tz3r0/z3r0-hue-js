@@ -102,6 +102,7 @@ async function returnToMenu() {
 //  ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// /////
 async function getHueGroups() {
   var options = {
+    method: `GET`,
     uri: `http://${config.ip}/api/${config.uname}/groups`
   }
   await rp(options)
