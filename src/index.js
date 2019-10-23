@@ -10,8 +10,7 @@ let groups = {
 //  ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// /////
 let config = {
   ip: `192.168.1.74`,
-  uname: `-cl3CKsN3O3F74GACqx-Zs9lDnwTn2zLtoCuGF20`,
-  msPostRequestSleep: 500
+  uname: `-cl3CKsN3O3F74GACqx-Zs9lDnwTn2zLtoCuGF20`
 }
 //  ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// /////
 let actions = {
@@ -62,13 +61,14 @@ let actions = {
   }
 }
 //  ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// /////
+// eslint-disable-next-line
 function sleep(ms) {
   return new Promise(resolve => {
     setTimeout(resolve, ms)
   })
 }
 //  ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// /////
-async function actionOnGroup(g, a, msSleepDelay) {
+async function actionOnGroup(g, a) {
   var options = {
     method: `PUT`,
     uri: `http://${config.ip}/api/${config.uname}/groups/${g}/action`,
@@ -78,7 +78,6 @@ async function actionOnGroup(g, a, msSleepDelay) {
   await rp(options)
     .then(function(j) {
       console.log(j)
-      sleep(msSleepDelay)
       return true
     })
     .catch(function(err) {
@@ -172,140 +171,44 @@ const loop = true
           await getHueGroups()
           break
         case `mode/default`:
-          await actionOnGroup(
-            groups.livingRoom,
-            actions.actionDefault,
-            config.msPostRequestSleep
-          )
-          await actionOnGroup(
-            groups.bedroom,
-            actions.actionDefault,
-            config.msPostRequestSleep
-          )
-          await actionOnGroup(
-            groups.bathroom,
-            actions.actionDefault,
-            config.msPostRequestSleep
-          )
+          await actionOnGroup(groups.livingRoom, actions.actionDefault)
+          await actionOnGroup(groups.bedroom, actions.actionDefault)
+          await actionOnGroup(groups.bathroom, actions.actionDefault)
           break
         case `mode/default/dim`:
-          await actionOnGroup(
-            groups.livingRoom,
-            actions.actionDefaultDim,
-            config.msPostRequestSleep
-          )
-          await actionOnGroup(
-            groups.bedroom,
-            actions.actionDefaultDim,
-            config.msPostRequestSleep
-          )
-          await actionOnGroup(
-            groups.bathroom,
-            actions.actionDefaultDim,
-            config.msPostRequestSleep
-          )
+          await actionOnGroup(groups.livingRoom, actions.actionDefaultDim)
+          await actionOnGroup(groups.bedroom, actions.actionDefaultDim)
+          await actionOnGroup(groups.bathroom, actions.actionDefaultDim)
           break
         case `mode/default/theater`:
-          await actionOnGroup(
-            groups.livingRoom,
-            actions.actionDefaultTheater,
-            config.msPostRequestSleep
-          )
-          await actionOnGroup(
-            groups.bedroom,
-            actions.actionDefaultTheater,
-            config.msPostRequestSleep
-          )
-          await actionOnGroup(
-            groups.bathroom,
-            actions.actionDefaultTheater,
-            config.msPostRequestSleep
-          )
+          await actionOnGroup(groups.livingRoom, actions.actionDefaultTheater)
+          await actionOnGroup(groups.bedroom, actions.actionDefaultTheater)
+          await actionOnGroup(groups.bathroom, actions.actionDefaultTheater)
           break
         case `mode/morning/getReady`:
-          await actionOnGroup(
-            groups.livingRoom,
-            actions.actionDefault,
-            config.msPostRequestSleep
-          )
-          await actionOnGroup(
-            groups.bedroom,
-            actions.actionDefault,
-            config.msPostRequestSleep
-          )
-          await actionOnGroup(
-            groups.bathroom,
-            actions.actionMorningGetReady,
-            config.msPostRequestSleep
-          )
+          await actionOnGroup(groups.livingRoom, actions.actionDefault)
+          await actionOnGroup(groups.bedroom, actions.actionDefault)
+          await actionOnGroup(groups.bathroom, actions.actionMorningGetReady)
           break
         case `mode/clean`:
-          await actionOnGroup(
-            groups.livingRoom,
-            actions.actionClean,
-            config.msPostRequestSleep
-          )
-          await actionOnGroup(
-            groups.bedroom,
-            actions.actionClean,
-            config.msPostRequestSleep
-          )
-          await actionOnGroup(
-            groups.bathroom,
-            actions.actionClean,
-            config.msPostRequestSleep
-          )
+          await actionOnGroup(groups.livingRoom, actions.actionClean)
+          await actionOnGroup(groups.bedroom, actions.actionClean)
+          await actionOnGroup(groups.bathroom, actions.actionClean)
           break
         case `mode/emergency`:
-          await actionOnGroup(
-            groups.livingRoom,
-            actions.actionEmergency,
-            config.msPostRequestSleep
-          )
-          await actionOnGroup(
-            groups.bedroom,
-            actions.actionEmergency,
-            config.msPostRequestSleep
-          )
-          await actionOnGroup(
-            groups.bathroom,
-            actions.actionEmergency,
-            config.msPostRequestSleep
-          )
+          await actionOnGroup(groups.livingRoom, actions.actionEmergency)
+          await actionOnGroup(groups.bedroom, actions.actionEmergency)
+          await actionOnGroup(groups.bathroom, actions.actionEmergency)
           break
         case `mode/sleep`:
-          await actionOnGroup(
-            groups.livingRoom,
-            actions.actionNightLight,
-            config.msPostRequestSleep
-          )
-          await actionOnGroup(
-            groups.bedroom,
-            actions.actionOff,
-            config.msPostRequestSleep
-          )
-          await actionOnGroup(
-            groups.bathroom,
-            actions.actionNightLight,
-            config.msPostRequestSleep
-          )
+          await actionOnGroup(groups.livingRoom, actions.actionNightLight)
+          await actionOnGroup(groups.bedroom, actions.actionOff)
+          await actionOnGroup(groups.bathroom, actions.actionNightLight)
           break
         case `mode/dark`:
-          await actionOnGroup(
-            groups.livingRoom,
-            actions.actionOff,
-            config.msPostRequestSleep
-          )
-          await actionOnGroup(
-            groups.bedroom,
-            actions.actionOff,
-            config.msPostRequestSleep
-          )
-          await actionOnGroup(
-            groups.bathroom,
-            actions.actionOff,
-            config.msPostRequestSleep
-          )
+          await actionOnGroup(groups.livingRoom, actions.actionOff)
+          await actionOnGroup(groups.bedroom, actions.actionOff)
+          await actionOnGroup(groups.bathroom, actions.actionOff)
           break
       }
       console.log(`\r\n`)
