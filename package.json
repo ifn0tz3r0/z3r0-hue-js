@@ -1,5 +1,5 @@
 {
-  "name": "z3r0-hue-js",
+  "name": "z3r0-hue-js-v2",
   "version": "1.0.0",
   "description": "phillips hue with nodejs",
   "main": "index.js",
@@ -20,15 +20,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/ifn0tz3r0/z3r0-hue-js.git"
+    "url": "git+https://github.com/ifn0tz3r0/z3r0-hue-js-v2.git"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/ifn0tz3r0/z3r0-hue-js/issues"
-  },
-  "homepage": "https://github.com/ifn0tz3r0/z3r0-hue-js#readme",
+  "homepage": "https://github.com/ifn0tz3r0/z3r0-hue-js-v2#readme",
   "devDependencies": {
     "@babel/cli": "^7.4.4",
     "@babel/core": "^7.4.5",
