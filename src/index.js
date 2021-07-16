@@ -3,9 +3,8 @@ const inq = require('inquirer')
 
 //  ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// /////
 let groups = {
-  livingRoom: 1,
-  bedroom: 2,
-  bathroom: 3
+  livingRoom: 3,
+  bathroom: 1
 }
 //  ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// /////
 let config = {
@@ -123,6 +122,26 @@ async function getHueGroups() {
       console.log(err)
     })
 }
+//  ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// /////
+async function getHueLights() {
+  var options = {
+    method: `GET`,
+    uri: `http://${config.ip}/api/${config.uname}/lights`
+  }
+  await rp(options)
+    .then(function(j) {
+      console.log(j)
+
+      let jsn = JSON.parse(j)
+
+      console.log(jsn)
+    })
+    .catch(function(err) {
+      console.log(err)
+    })
+}
+
+//  ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// /////
 
 const loop = true
 //  ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// /////
@@ -137,15 +156,16 @@ const loop = true
       console.log(`\r\n`)
       let choices = [
         `printip`,
-        `listgroups`,
-        `mode/default`,
-        `mode/default/dim`,
-        `mode/default/theater`,
-        `mode/morning/getReady`,
-        `mode/clean`,
-        `mode/emergency`,
-        `mode/sleep`,
-        `mode/dark`
+        `get.groups`,
+        `get.lights`,
+        `mode.default`,
+        `mode.default.dim`,
+        `mode.default.theater`,
+        `mode.morning.get.ready`,
+        `mode.clean`,
+        `mode.emergency`,
+        `mode.sleep`,
+        `mode.dark`
       ]
       let choice = await inq
         .prompt([
@@ -168,47 +188,42 @@ const loop = true
           console.log(config.ip)
           console.log(`\r\n`)
           break
-        case `listgroups`:
+        case `get.groups`:
           await getHueGroups()
           break
-        case `mode/default`:
+        case `get.lights`:
+          await getHueLights()
+          break
+        case `mode.default`:
           await actionOnGroup(groups.livingRoom, actions.actionDefault)
-          await actionOnGroup(groups.bedroom, actions.actionDefault)
           await actionOnGroup(groups.bathroom, actions.actionDefault)
           break
-        case `mode/default/dim`:
+        case `mode.default.dim`:
           await actionOnGroup(groups.livingRoom, actions.actionDefaultDim)
-          await actionOnGroup(groups.bedroom, actions.actionDefaultDim)
           await actionOnGroup(groups.bathroom, actions.actionDefaultDim)
           break
-        case `mode/default/theater`:
+        case `mode.default.theater`:
           await actionOnGroup(groups.livingRoom, actions.actionDefaultTheater)
-          await actionOnGroup(groups.bedroom, actions.actionDefaultTheater)
           await actionOnGroup(groups.bathroom, actions.actionDefaultTheater)
           break
-        case `mode/morning/getReady`:
+        case `mode.morning.get.ready`:
           await actionOnGroup(groups.livingRoom, actions.actionDefault)
-          await actionOnGroup(groups.bedroom, actions.actionDefault)
           await actionOnGroup(groups.bathroom, actions.actionMorningGetReady)
           break
-        case `mode/clean`:
+        case `mode.clean`:
           await actionOnGroup(groups.livingRoom, actions.actionClean)
-          await actionOnGroup(groups.bedroom, actions.actionClean)
           await actionOnGroup(groups.bathroom, actions.actionClean)
           break
-        case `mode/emergency`:
+        case `mode.emergency`:
           await actionOnGroup(groups.livingRoom, actions.actionEmergency)
-          await actionOnGroup(groups.bedroom, actions.actionEmergency)
           await actionOnGroup(groups.bathroom, actions.actionEmergency)
           break
-        case `mode/sleep`:
+        case `mode.sleep`:
           await actionOnGroup(groups.livingRoom, actions.actionNightLight)
-          await actionOnGroup(groups.bedroom, actions.actionOff)
           await actionOnGroup(groups.bathroom, actions.actionNightLight)
           break
-        case `mode/dark`:
+        case `mode.dark`:
           await actionOnGroup(groups.livingRoom, actions.actionOff)
-          await actionOnGroup(groups.bedroom, actions.actionOff)
           await actionOnGroup(groups.bathroom, actions.actionOff)
           break
       }
