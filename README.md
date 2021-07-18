@@ -1,6 +1,6 @@
 # z3r0-hue-js
 
-nodejs app for phillips hue
+nodejs app for philips hue
 
 git clone and run 'yarn'
 
