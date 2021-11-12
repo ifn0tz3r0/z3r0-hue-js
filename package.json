@@ -1,7 +1,7 @@
 {
   "name": "z3r0-hue-js-v2",
   "version": "1.0.0",
-  "description": "phillips hue with nodejs",
+  "description": "philips hue with nodejs",
   "main": "index.js",
   "scripts": {
     "start": "npm run pretty && eslint ./src --fix && npm run build && babel-node dist/index.js",
