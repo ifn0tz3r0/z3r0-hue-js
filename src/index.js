@@ -1,4 +1,4 @@
-const rp = require('request-promise-native')
+const fetch = require('node-fetch')
 const inq = require('inquirer')
 
 //  ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// /////
@@ -9,7 +9,7 @@ let groups = {
 }
 //  ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// /////
 let config = {
-  ip: `192.168.1.74`,
+  ip: `192.168.0.155`,
   uname: `-cl3CKsN3O3F74GACqx-Zs9lDnwTn2zLtoCuGF20`
 }
 //  ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// /////
@@ -69,21 +69,15 @@ function sleep(ms) {
 }
 //  ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// /////
 async function actionOnGroup(g, a) {
-  var options = {
-    method: `PUT`,
-    uri: `http://${config.ip}/api/${config.uname}/groups/${g}/action`,
-    json: true,
-    body: a
-  }
-  await rp(options)
-    .then(function(j) {
-      console.log(j)
-      return true
-    })
-    .catch(function(err) {
-      console.log(err)
-      return false
-    })
+  const response = await fetch(
+    `http://${config.ip}/api/${config.uname}/groups/${g}/action`,
+    {
+      method: `PUT`,
+      body: JSON.stringify(a)
+    }
+  )
+  const json = await response.json()
+  console.log(JSON.stringify(json, null, 2))
 }
 async function returnToMenu() {
   await inq
@@ -101,119 +95,107 @@ async function returnToMenu() {
 }
 //  ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// /////
 async function getHueGroups() {
-  var options = {
-    method: `GET`,
-    uri: `http://${config.ip}/api/${config.uname}/groups`
-  }
-  await rp(options)
-    .then(function(j) {
-      console.log(j)
-
-      let jsn = JSON.parse(j)
-
-      console.log(jsn)
-
-      console.log(`names:`)
-      for (var key in jsn) {
-        console.log(jsn[key].name)
-        console.log(jsn[key].action.xy)
-      }
-    })
-    .catch(function(err) {
-      console.log(err)
-    })
+  const response = await fetch(`http://${config.ip}/api/${config.uname}/groups`, {
+    method: `GET`
+  })
+  const json = await response.json()
+  console.log(JSON.stringify(json, null, 2))
 }
 
 const loop = true
 //  ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// /////
 ;(async () => {
   while (loop) {
-    console.log(`ip: [${config.ip}]`)
+    try {
+      console.log(`ip: [${config.ip}]`)
 
-    let loop = true
-    let cache = null
-    while (loop) {
-      process.stdout.write('\x1bc')
-      console.log(`\r\n`)
-      let choices = [
-        `printip`,
-        `listgroups`,
-        `mode/default`,
-        `mode/default/dim`,
-        `mode/default/theater`,
-        `mode/morning/getReady`,
-        `mode/clean`,
-        `mode/emergency`,
-        `mode/sleep`,
-        `mode/dark`
-      ]
-      let choice = await inq
-        .prompt([
-          {
-            type: 'list',
-            message: 'select an option:',
-            choices: choices,
-            name: `choice`,
-            default: cache,
-            pageSize: 50
-          }
-        ])
-        .then(answer => {
-          return answer.choice
-        })
+      let loop = true
+      let cache = null
+      while (loop) {
+        process.stdout.write('\x1bc')
+        console.log(`\r\n`)
+        let choices = [
+          `printip`,
+          `listgroups`,
+          `mode/default`,
+          `mode/default/dim`,
+          `mode/default/theater`,
+          `mode/morning/getReady`,
+          `mode/clean`,
+          `mode/emergency`,
+          `mode/sleep`,
+          `mode/dark`
+        ]
+        let choice = await inq
+          .prompt([
+            {
+              type: 'list',
+              message: 'select an option:',
+              choices: choices,
+              name: `choice`,
+              default: cache,
+              pageSize: 50
+            }
+          ])
+          .then(answer => {
+            return answer.choice
+          })
 
-      cache = choice
-      switch (choice) {
-        case `printip`:
-          console.log(config.ip)
-          console.log(`\r\n`)
-          break
-        case `listgroups`:
-          await getHueGroups()
-          break
-        case `mode/default`:
-          await actionOnGroup(groups.livingRoom, actions.actionDefault)
-          await actionOnGroup(groups.bedroom, actions.actionDefault)
-          await actionOnGroup(groups.bathroom, actions.actionDefault)
-          break
-        case `mode/default/dim`:
-          await actionOnGroup(groups.livingRoom, actions.actionDefaultDim)
-          await actionOnGroup(groups.bedroom, actions.actionDefaultDim)
-          await actionOnGroup(groups.bathroom, actions.actionDefaultDim)
-          break
-        case `mode/default/theater`:
-          await actionOnGroup(groups.livingRoom, actions.actionDefaultTheater)
-          await actionOnGroup(groups.bedroom, actions.actionDefaultTheater)
-          await actionOnGroup(groups.bathroom, actions.actionDefaultTheater)
-          break
-        case `mode/morning/getReady`:
-          await actionOnGroup(groups.livingRoom, actions.actionDefault)
-          await actionOnGroup(groups.bedroom, actions.actionDefault)
-          await actionOnGroup(groups.bathroom, actions.actionMorningGetReady)
-          break
-        case `mode/clean`:
-          await actionOnGroup(groups.livingRoom, actions.actionClean)
-          await actionOnGroup(groups.bedroom, actions.actionClean)
-          await actionOnGroup(groups.bathroom, actions.actionClean)
-          break
-        case `mode/emergency`:
-          await actionOnGroup(groups.livingRoom, actions.actionEmergency)
-          await actionOnGroup(groups.bedroom, actions.actionEmergency)
-          await actionOnGroup(groups.bathroom, actions.actionEmergency)
-          break
-        case `mode/sleep`:
-          await actionOnGroup(groups.livingRoom, actions.actionNightLight)
-          await actionOnGroup(groups.bedroom, actions.actionOff)
-          await actionOnGroup(groups.bathroom, actions.actionNightLight)
-          break
-        case `mode/dark`:
-          await actionOnGroup(groups.livingRoom, actions.actionOff)
-          await actionOnGroup(groups.bedroom, actions.actionOff)
-          await actionOnGroup(groups.bathroom, actions.actionOff)
-          break
+        cache = choice
+        switch (choice) {
+          case `printip`:
+            console.log(config.ip)
+            console.log(`\r\n`)
+            break
+          case `listgroups`:
+            await getHueGroups()
+            break
+          case `mode/default`:
+            await actionOnGroup(groups.livingRoom, actions.actionDefault)
+            await actionOnGroup(groups.bedroom, actions.actionDefault)
+            await actionOnGroup(groups.bathroom, actions.actionDefault)
+            break
+          case `mode/default/dim`:
+            await actionOnGroup(groups.livingRoom, actions.actionDefaultDim)
+            await actionOnGroup(groups.bedroom, actions.actionDefaultDim)
+            await actionOnGroup(groups.bathroom, actions.actionDefaultDim)
+            break
+          case `mode/default/theater`:
+            await actionOnGroup(groups.livingRoom, actions.actionDefaultTheater)
+            await actionOnGroup(groups.bedroom, actions.actionDefaultTheater)
+            await actionOnGroup(groups.bathroom, actions.actionDefaultTheater)
+            break
+          case `mode/morning/getReady`:
+            await actionOnGroup(groups.livingRoom, actions.actionDefault)
+            await actionOnGroup(groups.bedroom, actions.actionDefault)
+            await actionOnGroup(groups.bathroom, actions.actionMorningGetReady)
+            break
+          case `mode/clean`:
+            await actionOnGroup(groups.livingRoom, actions.actionClean)
+            await actionOnGroup(groups.bedroom, actions.actionClean)
+            await actionOnGroup(groups.bathroom, actions.actionClean)
+            break
+          case `mode/emergency`:
+            await actionOnGroup(groups.livingRoom, actions.actionEmergency)
+            await actionOnGroup(groups.bedroom, actions.actionEmergency)
+            await actionOnGroup(groups.bathroom, actions.actionEmergency)
+            break
+          case `mode/sleep`:
+            await actionOnGroup(groups.livingRoom, actions.actionNightLight)
+            await actionOnGroup(groups.bedroom, actions.actionOff)
+            await actionOnGroup(groups.bathroom, actions.actionNightLight)
+            break
+          case `mode/dark`:
+            await actionOnGroup(groups.livingRoom, actions.actionOff)
+            await actionOnGroup(groups.bedroom, actions.actionOff)
+            await actionOnGroup(groups.bathroom, actions.actionOff)
+            break
+        }
+        console.log(`\r\n`)
+        await returnToMenu()
       }
-      console.log(`\r\n`)
-      await returnToMenu()
+    } catch (e) {
+      console.log(`${e}`)
     }
   }
 })()
