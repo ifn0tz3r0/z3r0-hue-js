@@ -8,7 +8,6 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "babel src --out-dir dist",
     "pretty": "npx prettier './*.js' './src/*.js' --write",
-    "precommit": "lint-staged",
     "lint": "./node_modules/.bin/eslint './src/*.js' --fix"
   },
   "lint-staged": {
@@ -44,5 +43,10 @@
     "core-js": "3",
     "inquirer": "^8.2.0",
     "node-fetch": "^2.6.2"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
   }
 }
