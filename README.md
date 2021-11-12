@@ -2,7 +2,7 @@
 
 nodejs app for philips hue
 
-git clone and run 'yarn'
+git clone, npm i, npm start
 
 see also:
 
