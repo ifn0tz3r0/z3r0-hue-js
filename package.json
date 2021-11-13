@@ -1,5 +1,5 @@
 {
-  "name": "z3r0-hue-js-v2",
+  "name": "z3r0-hue-js",
   "version": "1.0.0",
   "description": "philips hue with nodejs",
   "main": "index.js",
