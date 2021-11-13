@@ -127,3 +127,426 @@ example response for getting groups:
   }
 }
 ```
+
+example response for getting all lights
+
+```
+{
+  "1": {
+    "state": {
+      "on": true,
+      "bri": 254,
+      "hue": 51274,
+      "sat": 254,
+      "effect": "none",
+      "xy": [
+        0.275,
+        0.1065
+      ],
+      "ct": 153,
+      "alert": "select",
+      "colormode": "xy",
+      "mode": "homeautomation",
+      "reachable": true
+    },
+    "swupdate": {
+      "state": "noupdates",
+      "lastinstall": "2021-08-19T21:49:46"
+    },
+    "type": "Extended color light",
+    "name": "kitchen.bulb",
+    "modelid": "LCT014",
+    "manufacturername": "Signify Netherlands B.V.",
+    "productname": "Hue color lamp",
+    "capabilities": {
+      "certified": true,
+      "control": {
+        "mindimlevel": 1000,
+        "maxlumen": 800,
+        "colorgamuttype": "C",
+        "colorgamut": [
+          [
+            0.6915,
+            0.3083
+          ],
+          [
+            0.17,
+            0.7
+          ],
+          [
+            0.1532,
+            0.0475
+          ]
+        ],
+        "ct": {
+          "min": 153,
+          "max": 500
+        }
+      },
+      "streaming": {
+        "renderer": true,
+        "proxy": true
+      }
+    },
+    "config": {
+      "archetype": "sultanbulb",
+      "function": "mixed",
+      "direction": "omnidirectional",
+      "startup": {
+        "mode": "lastonstate",
+        "configured": true
+      }
+    },
+    "uniqueid": "00:17:88:01:02:4f:58:55-0b",
+    "swversion": "1.88.1",
+    "swconfigid": "F48C5CE9",
+    "productid": "Philips-LCT014-1-A19ECLv4"
+  },
+  "2": {
+    "state": {
+      "on": true,
+      "bri": 254,
+      "hue": 51274,
+      "sat": 254,
+      "effect": "none",
+      "xy": [
+        0.275,
+        0.1065
+      ],
+      "ct": 153,
+      "alert": "select",
+      "colormode": "xy",
+      "mode": "homeautomation",
+      "reachable": true
+    },
+    "swupdate": {
+      "state": "noupdates",
+      "lastinstall": "2021-08-19T21:49:43"
+    },
+    "type": "Extended color light",
+    "name": "bathroom.bulb",
+    "modelid": "LCT014",
+    "manufacturername": "Signify Netherlands B.V.",
+    "productname": "Hue color lamp",
+    "capabilities": {
+      "certified": true,
+      "control": {
+        "mindimlevel": 1000,
+        "maxlumen": 800,
+        "colorgamuttype": "C",
+        "colorgamut": [
+          [
+            0.6915,
+            0.3083
+          ],
+          [
+            0.17,
+            0.7
+          ],
+          [
+            0.1532,
+            0.0475
+          ]
+        ],
+        "ct": {
+          "min": 153,
+          "max": 500
+        }
+      },
+      "streaming": {
+        "renderer": true,
+        "proxy": true
+      }
+    },
+    "config": {
+      "archetype": "sultanbulb",
+      "function": "mixed",
+      "direction": "omnidirectional",
+      "startup": {
+        "mode": "lastonstate",
+        "configured": true
+      }
+    },
+    "uniqueid": "00:17:88:01:02:4f:58:67-0b",
+    "swversion": "1.88.1",
+    "swconfigid": "F48C5CE9",
+    "productid": "Philips-LCT014-1-A19ECLv4"
+  },
+  "6": {
+    "state": {
+      "on": true,
+      "bri": 254,
+      "hue": 51274,
+      "sat": 254,
+      "effect": "none",
+      "xy": [
+        0.275,
+        0.1065
+      ],
+      "ct": 153,
+      "alert": "select",
+      "colormode": "xy",
+      "mode": "homeautomation",
+      "reachable": true
+    },
+    "swupdate": {
+      "state": "noupdates",
+      "lastinstall": "2021-08-19T21:49:38"
+    },
+    "type": "Extended color light",
+    "name": "living.room.bulb",
+    "modelid": "LCT016",
+    "manufacturername": "Signify Netherlands B.V.",
+    "productname": "Hue color lamp",
+    "capabilities": {
+      "certified": true,
+      "control": {
+        "mindimlevel": 1000,
+        "maxlumen": 800,
+        "colorgamuttype": "C",
+        "colorgamut": [
+          [
+            0.6915,
+            0.3083
+          ],
+          [
+            0.17,
+            0.7
+          ],
+          [
+            0.1532,
+            0.0475
+          ]
+        ],
+        "ct": {
+          "min": 153,
+          "max": 500
+        }
+      },
+      "streaming": {
+        "renderer": true,
+        "proxy": true
+      }
+    },
+    "config": {
+      "archetype": "sultanbulb",
+      "function": "mixed",
+      "direction": "omnidirectional",
+      "startup": {
+        "mode": "lastonstate",
+        "configured": true
+      }
+    },
+    "uniqueid": "00:17:88:01:03:60:b1:e7-0b",
+    "swversion": "1.88.1",
+    "swconfigid": "47ACF9B2",
+    "productid": "Philips-LCT016-1-A19ECLv5"
+  },
+  "8": {
+    "state": {
+      "on": true,
+      "bri": 254,
+      "hue": 51274,
+      "sat": 254,
+      "effect": "none",
+      "xy": [
+        0.275,
+        0.1065
+      ],
+      "ct": 153,
+      "alert": "select",
+      "colormode": "xy",
+      "mode": "homeautomation",
+      "reachable": true
+    },
+    "swupdate": {
+      "state": "noupdates",
+      "lastinstall": "2021-08-19T21:50:05"
+    },
+    "type": "Extended color light",
+    "name": "living.room.light.strip",
+    "modelid": "LST002",
+    "manufacturername": "Signify Netherlands B.V.",
+    "productname": "Hue lightstrip plus",
+    "capabilities": {
+      "certified": true,
+      "control": {
+        "mindimlevel": 25,
+        "maxlumen": 1600,
+        "colorgamuttype": "C",
+        "colorgamut": [
+          [
+            0.6915,
+            0.3083
+          ],
+          [
+            0.17,
+            0.7
+          ],
+          [
+            0.1532,
+            0.0475
+          ]
+        ],
+        "ct": {
+          "min": 153,
+          "max": 500
+        }
+      },
+      "streaming": {
+        "renderer": true,
+        "proxy": true
+      }
+    },
+    "config": {
+      "archetype": "huelightstrip",
+      "function": "mixed",
+      "direction": "omnidirectional",
+      "startup": {
+        "mode": "lastonstate",
+        "configured": true
+      }
+    },
+    "uniqueid": "00:17:88:01:03:65:b2:8c-0b",
+    "swversion": "67.88.1"
+  },
+  "9": {
+    "state": {
+      "on": true,
+      "bri": 254,
+      "hue": 51274,
+      "sat": 254,
+      "effect": "none",
+      "xy": [
+        0.275,
+        0.1065
+      ],
+      "ct": 153,
+      "alert": "select",
+      "colormode": "xy",
+      "mode": "homeautomation",
+      "reachable": true
+    },
+    "swupdate": {
+      "state": "noupdates",
+      "lastinstall": "2021-08-19T21:50:03"
+    },
+    "type": "Extended color light",
+    "name": "kitchen.light.strip",
+    "modelid": "LST002",
+    "manufacturername": "Signify Netherlands B.V.",
+    "productname": "Hue lightstrip plus",
+    "capabilities": {
+      "certified": true,
+      "control": {
+        "mindimlevel": 25,
+        "maxlumen": 1600,
+        "colorgamuttype": "C",
+        "colorgamut": [
+          [
+            0.6915,
+            0.3083
+          ],
+          [
+            0.17,
+            0.7
+          ],
+          [
+            0.1532,
+            0.0475
+          ]
+        ],
+        "ct": {
+          "min": 153,
+          "max": 500
+        }
+      },
+      "streaming": {
+        "renderer": true,
+        "proxy": true
+      }
+    },
+    "config": {
+      "archetype": "huelightstrip",
+      "function": "mixed",
+      "direction": "omnidirectional",
+      "startup": {
+        "mode": "safety",
+        "configured": true
+      }
+    },
+    "uniqueid": "00:17:88:01:01:1d:6a:65-0b",
+    "swversion": "67.88.1"
+  },
+  "10": {
+    "state": {
+      "on": true,
+      "bri": 254,
+      "hue": 51274,
+      "sat": 254,
+      "effect": "none",
+      "xy": [
+        0.275,
+        0.1065
+      ],
+      "ct": 153,
+      "alert": "select",
+      "colormode": "xy",
+      "mode": "homeautomation",
+      "reachable": true
+    },
+    "swupdate": {
+      "state": "noupdates",
+      "lastinstall": "2021-08-19T21:49:41"
+    },
+    "type": "Extended color light",
+    "name": "room.bulb",
+    "modelid": "LCT016",
+    "manufacturername": "Signify Netherlands B.V.",
+    "productname": "Hue color lamp",
+    "capabilities": {
+      "certified": true,
+      "control": {
+        "mindimlevel": 1000,
+        "maxlumen": 800,
+        "colorgamuttype": "C",
+        "colorgamut": [
+          [
+            0.6915,
+            0.3083
+          ],
+          [
+            0.17,
+            0.7
+          ],
+          [
+            0.1532,
+            0.0475
+          ]
+        ],
+        "ct": {
+          "min": 153,
+          "max": 500
+        }
+      },
+      "streaming": {
+        "renderer": true,
+        "proxy": true
+      }
+    },
+    "config": {
+      "archetype": "sultanbulb",
+      "function": "mixed",
+      "direction": "omnidirectional",
+      "startup": {
+        "mode": "safety",
+        "configured": true
+      }
+    },
+    "uniqueid": "00:17:88:01:03:60:d3:b8-0b",
+    "swversion": "1.88.1",
+    "swconfigid": "47ACF9B2",
+    "productid": "Philips-LCT016-1-A19ECLv5"
+  }
+}
+```

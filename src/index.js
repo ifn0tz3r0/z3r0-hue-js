@@ -65,7 +65,8 @@ const constants = {
   },
   MENU: {
     MENU_PRINT_CONFIG: `print.config`,
-    MENU_LIST_GROUPS: `list.groups`,
+    MENU_GET_GROUPS: `get.groups`,
+    MENU_GET_LIGHTS: `get.lights`,
     MENU_MODE_WHITE: `mode.white`,
     MENU_MODE_BLUE: `mode.blue`,
     MENU_MODE_GREEN: `mode.green`,
@@ -92,6 +93,15 @@ async function actionOnGroup(g, a) {
 /* method to return all light groups */
 async function getHueGroups() {
   const response = await fetch(`http://${constants.CONFIG.IP}/api/${constants.CONFIG.USERNAME}/groups`, {
+    method: `GET`
+  })
+  const json = await response.json()
+  console.log(JSON.stringify(json, null, 2))
+}
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/* method to return all lights */
+async function getHueLights() {
+  const response = await fetch(`http://${constants.CONFIG.IP}/api/${constants.CONFIG.USERNAME}/lights`, {
     method: `GET`
   })
   const json = await response.json()
@@ -131,7 +141,8 @@ async function returnToMenu() {
             message: 'select an option:',
             choices: [
               constants.MENU.MENU_PRINT_CONFIG,
-              constants.MENU.MENU_LIST_GROUPS,
+              constants.MENU.MENU_GET_GROUPS,
+              constants.MENU.MENU_GET_LIGHTS,
               constants.MENU.MENU_MODE_WHITE,
               constants.MENU.MENU_MODE_BLUE,
               constants.MENU.MENU_MODE_GREEN,
@@ -158,8 +169,11 @@ async function returnToMenu() {
         case constants.MENU.MENU_PRINT_CONFIG:
           console.log(constants.CONFIG)
           break
-        case constants.MENU.MENU_LIST_GROUPS:
+        case constants.MENU.MENU_GET_GROUPS:
           await getHueGroups()
+          break
+        case constants.MENU.MENU_GET_LIGHTS:
+          await getHueLights()
           break
         case constants.MENU.MENU_MODE_WHITE:
           await actionOnGroup(constants.GROUPS.LIVINGROOM, constants.ACTIONS.ACTION_WHITE)
