@@ -1,90 +1,109 @@
 const fetch = require('node-fetch')
 const inq = require('inquirer')
 
-//  ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// /////
-let groups = {
-  livingRoom: 1,
-  bedroom: 2,
-  bathroom: 3
-}
-//  ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// /////
-let config = {
-  ip: `192.168.0.155`,
-  uname: `-cl3CKsN3O3F74GACqx-Zs9lDnwTn2zLtoCuGF20`
-}
-//  ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// /////
-let actions = {
-  actionDefault: {
-    on: true,
-    bri: 254,
-    effect: `none`,
-    xy: [0.1411, 0.0985]
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+const constants = {
+  CONFIG: {
+    /* the ip address of your hue hub */
+    IP: `192.168.0.155`,
+    /* username for your hue hub */
+    USERNAME: `-cl3CKsN3O3F74GACqx-Zs9lDnwTn2zLtoCuGF20`
   },
-  actionDefaultDim: {
-    on: true,
-    bri: 150,
-    effect: `none`,
-    xy: [0.1411, 0.0985]
+  /* group indexes as set via the hue app */
+  GROUPS: {
+    LIVINGROOM: 1,
+    BEDROOM: 2,
+    BATHROOM: 3
   },
-  actionDefaultTheater: {
-    on: true,
-    bri: 50,
-    effect: `none`,
-    xy: [0.1411, 0.0985]
+  /* color and brightness configurations, these are sent to light groups via a put request */
+  ACTIONS: {
+    ACTION_WHITE: {
+      on: true,
+      bri: 254,
+      effect: `none`,
+      xy: [0.2409, 0.276]
+    },
+    ACTION_BLUE: {
+      on: true,
+      bri: 254,
+      effect: `none`,
+      xy: [0.1411, 0.0985]
+    },
+    ACTION_GREEN: {
+      on: true,
+      bri: 254,
+      effect: `none`,
+      xy: [0.161, 0.3517]
+    },
+    ACTION_PURPLE: {
+      on: true,
+      bri: 254,
+      effect: `none`,
+      xy: [0.275, 0.1066]
+    },
+    ACTION_RED: {
+      on: true,
+      bri: 254,
+      effect: `none`,
+      xy: [0.6751, 0.3193]
+    },
+    ACTION_DIM: {
+      on: true,
+      bri: 150
+    },
+    ACTION_THEATER: {
+      on: true,
+      bri: 50
+    },
+    ACTION_SLEEP: {
+      on: true,
+      bri: 8
+    },
+    ACTION_OFF: {
+      on: false
+    }
   },
-  actionNightLight: {
-    on: true,
-    bri: 10,
-    effect: `none`,
-    xy: [0.1411, 0.0985]
-  },
-  actionMorningGetReady: {
-    on: true,
-    bri: 254,
-    effect: `none`,
-    xy: [0.2409, 0.276]
-  },
-  actionClean: {
-    on: true,
-    bri: 254,
-    effect: `none`,
-    xy: [0.2409, 0.276]
-  },
-  actionEmergency: {
-    on: true,
-    bri: 254,
-    effect: `none`,
-    xy: [0.6751, 0.3193]
-  },
-  actionOff: {
-    on: false
+  MENU: {
+    MENU_PRINT_CONFIG: `print.config`,
+    MENU_LIST_GROUPS: `list.groups`,
+    MENU_MODE_WHITE: `mode.white`,
+    MENU_MODE_BLUE: `mode.blue`,
+    MENU_MODE_GREEN: `mode.green`,
+    MENU_MODE_PURPLE: `mode.purple`,
+    MENU_MODE_RED: `mode.red`,
+    MENU_MODE_ALL_DIM: `mode.all.dim`,
+    MENU_MODE_ALL_THEATER: `mode.all.theater`,
+    MENU_MODE_ALL_SLEEP: `mode.all.sleep`,
+    MENU_MODE_ALL_OFF: `mode.all.off`,
+    MENU_EXIT: `exit`
   }
 }
-//  ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// /////
-// eslint-disable-next-line
-function sleep(ms) {
-  return new Promise(resolve => {
-    setTimeout(resolve, ms)
-  })
-}
-//  ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// /////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/* method to perform a configuration change on a light group */
 async function actionOnGroup(g, a) {
-  const response = await fetch(
-    `http://${config.ip}/api/${config.uname}/groups/${g}/action`,
-    {
-      method: `PUT`,
-      body: JSON.stringify(a)
-    }
-  )
+  const response = await fetch(`http://${constants.CONFIG.IP}/api/${constants.CONFIG.USERNAME}/groups/${g}/action`, {
+    method: `PUT`,
+    body: JSON.stringify(a)
+  })
   const json = await response.json()
   console.log(JSON.stringify(json, null, 2))
 }
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/* method to return all light groups */
+async function getHueGroups() {
+  const response = await fetch(`http://${constants.CONFIG.IP}/api/${constants.CONFIG.USERNAME}/groups`, {
+    method: `GET`
+  })
+  const json = await response.json()
+  console.log(JSON.stringify(json, null, 2))
+}
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
 async function returnToMenu() {
   await inq
     .prompt([
       {
         type: 'list',
-        message: ':',
+        message: 'select an option:',
         choices: [`return to menu`],
         name: `choice`
       }
@@ -93,110 +112,109 @@ async function returnToMenu() {
       return answer.choice
     })
 }
-//  ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// /////
-async function getHueGroups() {
-  const response = await fetch(`http://${config.ip}/api/${config.uname}/groups`, {
-    method: `GET`
-  })
-  const json = await response.json()
-  console.log(JSON.stringify(json, null, 2))
-}
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/* main application logic */
+(async () => {
+  try {
+    let loop = true
+    let cache = null
 
-const loop = true
-//  ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// /////
-;(async () => {
-  while (loop) {
-    try {
-      console.log(`ip: [${config.ip}]`)
+    do {
+      /* clear the screen */
+      console.clear()
+      console.log(`[ z3r0-hue-js : nodejs application for philips hue api ]`)
 
-      let loop = true
-      let cache = null
-      while (loop) {
-        process.stdout.write('\x1bc')
-        console.log(`\r\n`)
-        let choices = [
-          `printip`,
-          `listgroups`,
-          `mode/default`,
-          `mode/default/dim`,
-          `mode/default/theater`,
-          `mode/morning/getReady`,
-          `mode/clean`,
-          `mode/emergency`,
-          `mode/sleep`,
-          `mode/dark`
-        ]
-        let choice = await inq
-          .prompt([
-            {
-              type: 'list',
-              message: 'select an option:',
-              choices: choices,
-              name: `choice`,
-              default: cache,
-              pageSize: 50
-            }
-          ])
-          .then(answer => {
-            return answer.choice
-          })
+      /* populate the menu */
+      let choices = [
+        constants.MENU.MENU_PRINT_CONFIG,
+        constants.MENU.MENU_LIST_GROUPS,
+        constants.MENU.MENU_MODE_WHITE,
+        constants.MENU.MENU_MODE_BLUE,
+        constants.MENU.MENU_MODE_GREEN,
+        constants.MENU.MENU_MODE_PURPLE,
+        constants.MENU.MENU_MODE_RED,
+        constants.MENU.MENU_MODE_ALL_DIM,
+        constants.MENU.MENU_MODE_ALL_THEATER,
+        constants.MENU.MENU_MODE_ALL_SLEEP,
+        constants.MENU.MENU_MODE_ALL_OFF,
+        constants.MENU.MENU_EXIT
+      ]
+      let choice = await inq
+        .prompt([
+          {
+            type: 'list',
+            message: 'select an option:',
+            choices: choices,
+            name: `choice`,
+            default: cache,
+            pageSize: 50
+          }
+        ])
+        .then(answer => {
+          return answer.choice
+        })
 
-        cache = choice
-        switch (choice) {
-          case `printip`:
-            console.log(config.ip)
-            console.log(`\r\n`)
-            break
-          case `listgroups`:
-            await getHueGroups()
-            break
-          case `mode/default`:
-            await actionOnGroup(groups.livingRoom, actions.actionDefault)
-            await actionOnGroup(groups.bedroom, actions.actionDefault)
-            await actionOnGroup(groups.bathroom, actions.actionDefault)
-            break
-          case `mode/default/dim`:
-            await actionOnGroup(groups.livingRoom, actions.actionDefaultDim)
-            await actionOnGroup(groups.bedroom, actions.actionDefaultDim)
-            await actionOnGroup(groups.bathroom, actions.actionDefaultDim)
-            break
-          case `mode/default/theater`:
-            await actionOnGroup(groups.livingRoom, actions.actionDefaultTheater)
-            await actionOnGroup(groups.bedroom, actions.actionDefaultTheater)
-            await actionOnGroup(groups.bathroom, actions.actionDefaultTheater)
-            break
-          case `mode/morning/getReady`:
-            await actionOnGroup(groups.livingRoom, actions.actionDefault)
-            await actionOnGroup(groups.bedroom, actions.actionDefault)
-            await actionOnGroup(groups.bathroom, actions.actionMorningGetReady)
-            break
-          case `mode/clean`:
-            await actionOnGroup(groups.livingRoom, actions.actionClean)
-            await actionOnGroup(groups.bedroom, actions.actionClean)
-            await actionOnGroup(groups.bathroom, actions.actionClean)
-            break
-          case `mode/emergency`:
-            await actionOnGroup(groups.livingRoom, actions.actionEmergency)
-            await actionOnGroup(groups.bedroom, actions.actionEmergency)
-            await actionOnGroup(groups.bathroom, actions.actionEmergency)
-            break
-          case `mode/sleep`:
-            await actionOnGroup(groups.livingRoom, actions.actionNightLight)
-            await actionOnGroup(groups.bedroom, actions.actionOff)
-            await actionOnGroup(groups.bathroom, actions.actionNightLight)
-            break
-          case `mode/dark`:
-            await actionOnGroup(groups.livingRoom, actions.actionOff)
-            await actionOnGroup(groups.bedroom, actions.actionOff)
-            await actionOnGroup(groups.bathroom, actions.actionOff)
-            break
-        }
-        console.log(`\r\n`)
-        await returnToMenu()
+      cache = choice
+
+      switch (choice) {
+        case constants.MENU.MENU_PRINT_CONFIG:
+          console.log(constants.CONFIG)
+          break
+        case constants.MENU.MENU_LIST_GROUPS:
+          await getHueGroups()
+          break
+        case constants.MENU.MENU_MODE_WHITE:
+          await actionOnGroup(constants.GROUPS.LIVINGROOM, constants.ACTIONS.ACTION_WHITE)
+          await actionOnGroup(constants.GROUPS.BEDROOM, constants.ACTIONS.ACTION_WHITE)
+          await actionOnGroup(constants.GROUPS.BATHROOM, constants.ACTIONS.ACTION_WHITE)
+          break
+        case constants.MENU.MENU_MODE_BLUE:
+          await actionOnGroup(constants.GROUPS.LIVINGROOM, constants.ACTIONS.ACTION_BLUE)
+          await actionOnGroup(constants.GROUPS.BEDROOM, constants.ACTIONS.ACTION_BLUE)
+          await actionOnGroup(constants.GROUPS.BATHROOM, constants.ACTIONS.ACTION_BLUE)
+          break
+        case constants.MENU.MENU_MODE_GREEN:
+          await actionOnGroup(constants.GROUPS.LIVINGROOM, constants.ACTIONS.ACTION_GREEN)
+          await actionOnGroup(constants.GROUPS.BEDROOM, constants.ACTIONS.ACTION_GREEN)
+          await actionOnGroup(constants.GROUPS.BATHROOM, constants.ACTIONS.ACTION_GREEN)
+          break
+        case constants.MENU.MENU_MODE_PURPLE:
+          await actionOnGroup(constants.GROUPS.LIVINGROOM, constants.ACTIONS.ACTION_PURPLE)
+          await actionOnGroup(constants.GROUPS.BEDROOM, constants.ACTIONS.ACTION_PURPLE)
+          await actionOnGroup(constants.GROUPS.BATHROOM, constants.ACTIONS.ACTION_PURPLE)
+          break
+        case constants.MENU.MENU_MODE_RED:
+          await actionOnGroup(constants.GROUPS.LIVINGROOM, constants.ACTIONS.ACTION_RED)
+          await actionOnGroup(constants.GROUPS.BEDROOM, constants.ACTIONS.ACTION_RED)
+          await actionOnGroup(constants.GROUPS.BATHROOM, constants.ACTIONS.ACTION_RED)
+          break
+        case constants.MENU.MENU_MODE_ALL_DIM:
+          await actionOnGroup(constants.GROUPS.LIVINGROOM, constants.ACTIONS.ACTION_DIM)
+          await actionOnGroup(constants.GROUPS.BEDROOM, constants.ACTIONS.ACTION_DIM)
+          await actionOnGroup(constants.GROUPS.BATHROOM, constants.ACTIONS.ACTION_DIM)
+          break
+        case constants.MENU.MENU_MODE_ALL_THEATER:
+          await actionOnGroup(constants.GROUPS.LIVINGROOM, constants.ACTIONS.ACTION_THEATER)
+          await actionOnGroup(constants.GROUPS.BEDROOM, constants.ACTIONS.ACTION_THEATER)
+          await actionOnGroup(constants.GROUPS.BATHROOM, constants.ACTIONS.ACTION_THEATER)
+          break
+        case constants.MENU.MENU_MODE_ALL_SLEEP:
+          await actionOnGroup(constants.GROUPS.LIVINGROOM, constants.ACTIONS.ACTION_SLEEP)
+          await actionOnGroup(constants.GROUPS.BEDROOM, constants.ACTIONS.ACTION_SLEEP)
+          await actionOnGroup(constants.GROUPS.BATHROOM, constants.ACTIONS.ACTION_SLEEP)
+          break
+        case constants.MENU.MENU_MODE_ALL_OFF:
+          await actionOnGroup(constants.GROUPS.LIVINGROOM, constants.ACTIONS.ACTION_OFF)
+          await actionOnGroup(constants.GROUPS.BEDROOM, constants.ACTIONS.ACTION_OFF)
+          await actionOnGroup(constants.GROUPS.BATHROOM, constants.ACTIONS.ACTION_OFF)
+          break
+        case constants.MENU.MENU_EXIT:
+          process.exit(0)
       }
-    } catch (e) {
-      console.log(`${e}`)
-    }
+      await returnToMenu()
+    } while (loop === true)
+  } catch (e) {
+    console.log(e)
   }
 })()
-//  ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// /////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
