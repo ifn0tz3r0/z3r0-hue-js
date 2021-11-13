@@ -124,27 +124,25 @@ async function returnToMenu() {
       console.clear()
       console.log(`[ z3r0-hue-js : nodejs application for philips hue api ]`)
 
-      /* populate the menu */
-      let choices = [
-        constants.MENU.MENU_PRINT_CONFIG,
-        constants.MENU.MENU_LIST_GROUPS,
-        constants.MENU.MENU_MODE_WHITE,
-        constants.MENU.MENU_MODE_BLUE,
-        constants.MENU.MENU_MODE_GREEN,
-        constants.MENU.MENU_MODE_PURPLE,
-        constants.MENU.MENU_MODE_RED,
-        constants.MENU.MENU_MODE_ALL_DIM,
-        constants.MENU.MENU_MODE_ALL_THEATER,
-        constants.MENU.MENU_MODE_ALL_SLEEP,
-        constants.MENU.MENU_MODE_ALL_OFF,
-        constants.MENU.MENU_EXIT
-      ]
       let choice = await inq
         .prompt([
           {
             type: 'list',
             message: 'select an option:',
-            choices: choices,
+            choices: [
+              constants.MENU.MENU_PRINT_CONFIG,
+              constants.MENU.MENU_LIST_GROUPS,
+              constants.MENU.MENU_MODE_WHITE,
+              constants.MENU.MENU_MODE_BLUE,
+              constants.MENU.MENU_MODE_GREEN,
+              constants.MENU.MENU_MODE_PURPLE,
+              constants.MENU.MENU_MODE_RED,
+              constants.MENU.MENU_MODE_ALL_DIM,
+              constants.MENU.MENU_MODE_ALL_THEATER,
+              constants.MENU.MENU_MODE_ALL_SLEEP,
+              constants.MENU.MENU_MODE_ALL_OFF,
+              constants.MENU.MENU_EXIT
+            ],
             name: `choice`,
             default: cache,
             pageSize: 50
